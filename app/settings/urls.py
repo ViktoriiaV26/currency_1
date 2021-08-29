@@ -3,8 +3,7 @@ from django.urls import path
 from currency.views import (index, hello_world,
                             contactus_list, rate_list,
                             source_create, source_list, source_details,
-                            source_update, source_delete
-                            )
+                            source_update, source_delete,)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
