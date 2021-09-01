@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block main_content %}
+<table>
+    <tr>
+        <th> Id </th>
+        <th> Sale </th>
+        <th> Buy </th>
+        <th> Type </th>
+    </tr>
+    {% for rate in rate_list %}
+    <tr>
+        <td>{{ rate.id }}</td>
+        <td> {{ rate.sale }}</td>
+        <td>{{ rate.buy }}</td>
+        <td>{{ rate.type }}</td>
+        <a href="/rate/details/"></a>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
