@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block main_content %}
 
-<a href="/source/create/"> Create Source </a>
+<a href="{% url 'currency:source-create' %}"> Create Source </a>
 <br>
-{% for s in source_list %}
-    Id: {{s.id}} Name: {{ s.name }} Source: {{ s.source_url }}
-    <a href="/source/details/{{s.id}}"> Details </a>
-    <a href="/source/update/{{s.id}}"> Update </a>
-    <a href="/source/delete/{{s.id}}"> Delete </a>
+{% for source in source_list %}
+    Id: {{source.id}} Name: {{ source.name }} Source: {{ source.source_url }}
+    <a href="{% url 'currency:source-details' source.pk %}"> Details </a>
+    <a href="{% url 'currency:source-update' source.pk %}"> Update </a>
+    <a href="{% url 'currency:source-delete' source.pk %}"> Delete </a>
 </br>
 {% endfor %}
 {% endblock %}
