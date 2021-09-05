@@ -24,7 +24,6 @@ class ContactUsCreateView(CreateView):
     )
 
     def form_invalid(self, form):
-        print('form_invalid')
         return super().form_invalid(form)
 
     def form_valid(self, form):
