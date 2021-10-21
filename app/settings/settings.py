@@ -2,6 +2,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from celery.schedules import crontab
+from django.urls import reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -17,6 +18,8 @@ SECRET_KEY = 'django-insecure-+h+icdeye8j)2mf(%+bq$^^57wfktbve%$m7283t2&1hek8cij
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 
+LOGIN_REDIRECT_URL = reverse_lazy('index')
+LOGOUT_REDIRECT_URL = reverse_lazy('index')
 
 # Application definition
 
@@ -29,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'debug_toolbar',
+    'accounts',
     'currency',
     'silk',
 ]
@@ -126,6 +130,7 @@ INTERNAL_IPS = [
     '172.31.69.226',
 ]
 
+AUTH_USER_MODEL = 'accounts.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
