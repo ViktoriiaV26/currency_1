@@ -4,7 +4,7 @@ from django.conf import settings
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
 from currency.models import ContactUs, Rate, Source
-from currency.forms import SourceForm
+from currency.forms import SourceForm, RateForm
 from django.core.mail import send_mail
 
 
@@ -54,6 +54,31 @@ class RateListView(LoginRequiredMixin, ListView):
     # def get(self, request,  *args, **kwargs):
     #     print(request.COOKIES)
     #     return super().get(request, *args, **kwargs)
+
+
+class RateCreateView(CreateView):
+    queryset = Rate.objects.all()
+    form_class = RateForm
+    success_url = reverse_lazy('currency:rate-list')
+    template_name = 'rate_create.html'
+
+
+class RateDetailView(DetailView):
+    queryset = Rate.objects.all()
+    template_name = 'rate_details.html'
+
+
+class RateUpdateView(UpdateView):
+    queryset = Rate.objects.all()
+    form_class = RateForm
+    success_url = reverse_lazy('currency:rate-list')
+    template_name = 'rate_update.html'
+
+
+class RateDeleteView(DeleteView):
+    queryset = Rate.objects.all()
+    success_url = reverse_lazy('currency:rate-list')
+    template_name = 'rate_delete.html'
 
 
 class SourceListView(ListView):

@@ -14,4 +14,4 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('__debug__/', include(debug_toolbar.urls)),
 ]
-urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]
+# urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]

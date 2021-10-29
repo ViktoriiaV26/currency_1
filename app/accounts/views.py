@@ -36,3 +36,17 @@ class SignUpView(CreateView):
 # class ActivateUserView(UpdateView):
 class ActivateUserView(View):
     pass
+    # pattern_name = 'index'
+    #
+    # def get_redirect_url(self, *args, **kwargs):
+    #     username = kwargs.pop('username')
+    #     user = get_object_or_404(User, username=username, is_active=False)
+    #
+    #     user.is_active = True
+    #
+    #     # update_fields - save only needed(minimum) fields
+    #     user.save(update_fields=('is_active',))
+    #
+    #     messages.info(self.request, 'Your Account is activated!')
+    #
+    #     return super().get_redirect_url(*args, **kwargs)

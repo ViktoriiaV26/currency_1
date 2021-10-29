@@ -3,13 +3,13 @@
     <div> <a href="{% url 'currency:rate-list' %}"> Rate List </a></div>
     <div> <a href="{% url 'currency:contactus-list' %}"> ContactUs List </a></div>
     <div><a href="{% url 'currency:source-list' %}"> Source list </a></div>
-
     {% if request.user.is_authenticated %}
         {{ request.user.email }}
-        <div><a href="{% url 'accounts:my-profile' %}">My Profile</a></div>
+        {# <div><a href="{% url 'accounts:my-profile' %}">My Profile</a></div>#}
         <div><a href="{% url 'logout' %}"> LogOut </a></div>
     {% else %}
         <div><a href="{% url 'login' %}"> Login </a></div>
         <div><a href="{% url 'accounts:sign-up' %}"> SignUp </a></div>
+        <div><a href="{% url 'accounts:sign-up' %}"> Submit </a></div>
     {% endif %}
 </div>
