@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.conf import settings
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
@@ -47,13 +47,9 @@ class ContactUsCreateView(CreateView):
         return super().form_valid(form)
 
 
-class RateListView(LoginRequiredMixin, ListView):
+class RateListView(ListView):
     queryset = Rate.objects.all().order_by('-created')
     template_name = 'rate_list.html'
-
-    # def get(self, request,  *args, **kwargs):
-    #     print(request.COOKIES)
-    #     return super().get(request, *args, **kwargs)
 
 
 class RateCreateView(CreateView):
@@ -63,22 +59,28 @@ class RateCreateView(CreateView):
     template_name = 'rate_create.html'
 
 
-class RateDetailView(DetailView):
+class RateDetailView(LoginRequiredMixin, DetailView):
     queryset = Rate.objects.all()
     template_name = 'rate_details.html'
 
 
-class RateUpdateView(UpdateView):
+class RateUpdateView(UserPassesTestMixin, UpdateView):
     queryset = Rate.objects.all()
     form_class = RateForm
     success_url = reverse_lazy('currency:rate-list')
     template_name = 'rate_update.html'
 
+    def test_func(self):
+        return self.request.user.is_superuser
 
-class RateDeleteView(DeleteView):
+
+class RateDeleteView(UserPassesTestMixin, DeleteView):
     queryset = Rate.objects.all()
     success_url = reverse_lazy('currency:rate-list')
     template_name = 'rate_delete.html'
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 class SourceListView(ListView):
