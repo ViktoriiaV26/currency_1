@@ -23,6 +23,9 @@ LOGOUT_REDIRECT_URL = reverse_lazy('index')
 
 # Application definition
 
+HTTP_SCHEMA = 'http'
+DOMAIN = 'localhost:8000'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
