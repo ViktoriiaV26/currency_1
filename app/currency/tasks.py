@@ -61,9 +61,10 @@ def parse_monobank():
     rates = response.json()
     source = 'MonoBank'
     available_currency_type = {
-        840: 'USD',
-        978: 'EUR',
+        840: mch.TYPE_USD,
+        978: mch.TYPE_EUR,
     }
+
     for rate in rates:
         currency_type = rate['currencyCodeA']
 
