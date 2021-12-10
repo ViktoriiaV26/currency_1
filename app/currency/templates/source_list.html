@@ -1,13 +1,35 @@
 {% extends 'base.html' %}
 {% block main_content %}
 
-<a href="{% url 'currency:source-create' %}"> Create Source </a>
-<br>
-{% for source in source_list %}
-    Id: {{source.id}} Name: {{ source.name }} Source: {{ source.source_url }}
-    <a href="{% url 'currency:source-details' source.pk %}"> Details </a>
-    <a href="{% url 'currency:source-update' source.pk %}"> Update </a>
-    <a href="{% url 'currency:source-delete' source.pk %}"> Delete </a>
-</br>
-{% endfor %}
+<a href="{% url 'currency:source-create' %}"><button class="btn btn-warning text-dark">Create Source</button></a>
+
+<table class="table table-striped">
+    <tr>
+        <th> Id </th>
+        <th> Name </th>
+        <th> Source </th>
+        <th> Actions </th>
+        <th> Source Logo </th>
+    </tr>
+    {% for source in source_list %}
+    <tr>
+        <td>{{ source.id }}</td>
+        <td> {{ source.name }}</td>
+        <td>{{ source.source_url }}</td>
+        <td>
+            <div class="dropdown">
+              <button class="btn btn-outline-warning text-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                Actions
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="btn btn-outline-dark btn-sm" href="{% url 'currency:source-details' source.pk %}"> Details </a>
+                <a class="btn btn-outline-dark btn-sm" href="{% url 'currency:source-update' source.pk %}"> Update </a>
+                <a class="btn btn-outline-dark btn-sm" href="{% url 'currency:source-delete' source.pk %}"> Delete </a>
+              </div>
+            </div>
+        </td>
+        <td><img src="{{ source.get_logo }}" alt="source logo" width="50" height="50"/></td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

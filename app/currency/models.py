@@ -1,4 +1,6 @@
 from django.db import models
+from django.templatetags.static import static
+
 from currency import model_choices as mch
 
 
@@ -19,6 +21,18 @@ class Rate(models.Model):
 class Source(models.Model):
     source_url = models.URLField(max_length=255)
     name = models.CharField(max_length=64)
+
+    logo = models.FileField(
+        upload_to=f'sources/logo',  # noqa
+        blank=True,
+        null=True,
+        default=None,
+    )
+
+    def get_logo(self):
+        if self.logo:
+            return self.logo.url
+        return static('images/source-default.jpeg')
 
 
 class ResponseLog(models.Model):

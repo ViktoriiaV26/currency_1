@@ -1,9 +1,18 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block main_content %}
 
 My Profile
 
-<form method="post">
+{% if request.user.avatar %}
+<img src="{{ request.user.avatar.url }}" class="rounded-circle h150">
+{% else %}
+<img src="{% static 'images/anon.jpeg'%}" class="rounded-circle h150">
+{% endif %}
+
+
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit"> Submit </button>

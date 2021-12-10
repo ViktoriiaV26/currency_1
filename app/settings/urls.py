@@ -3,6 +3,8 @@ from django.contrib import admin
 from django.urls import path, include
 import debug_toolbar
 from django.views.generic import TemplateView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -15,3 +17,4 @@ urlpatterns = [
     path('__debug__/', include(debug_toolbar.urls)),
 ]
 urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]
+urlpatterns.extend(static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))

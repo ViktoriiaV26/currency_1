@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% block main_content %}
 
-<a href="{% url 'currency:rate-create' %}">Create Rate</a>
-<table>
+<a href="{% url 'currency:rate-create' %}"><button class="btn btn-warning text-dark">Create Rate</button></a>
+
+<table class="table table-striped">
     <tr>
         <th> Id </th>
         <th> Sale </th>
@@ -10,6 +11,7 @@
         <th> Type </th>
         <th> Source </th>
         <th> Created </th>
+        <th> Actions </th>
     </tr>
     {% for rate in rate_list %}
     <tr>
@@ -20,12 +22,20 @@
         <td>{{ rate.source }}</td>
         <td>{{ rate.created }}</td>
         {% if request.user.is_superuser %}
-        <td> <a href="{% url 'currency:rate-details' rate.pk %}"> Details </a>
-            <a href="{% url 'currency:rate-update' rate.pk %}"> Update </a>
-            <a href="{% url 'currency:rate-delete' rate.pk %}"> Delete </a></td>
-        {% endif %}
-     </tr>
+        <td>
+            <div class="dropdown">
+              <button class="btn btn-outline-warning text-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                Actions
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="btn btn-outline-dark btn-sm" href="{% url 'currency:rate-details' rate.pk %}"> Details </a>
+                <a class="btn btn-outline-dark btn-sm" href="{% url 'currency:rate-update' rate.pk %}"> Update </a>
+                <a class="btn btn-outline-dark btn-sm" href="{% url 'currency:rate-delete' rate.pk %}"> Delete </a>
+              </div>
+            </div>
+        </td>
+        {%endif%}
+    </tr>
     {% endfor %}
 </table>
-
 {% endblock %}
