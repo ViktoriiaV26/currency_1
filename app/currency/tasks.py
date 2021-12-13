@@ -1,6 +1,7 @@
 from celery import shared_task
 import requests
 from decimal import Decimal
+from currency import consts
 from currency import model_choices as mch
 from bs4 import BeautifulSoup
 
@@ -11,14 +12,17 @@ def round_currency(num):
 
 @shared_task
 def parse_privatbank():
-    from currency.models import Rate
+    from currency.models import Rate, Source
 
     privatbank_currency_url = 'https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5'
     response = requests.get(privatbank_currency_url)
     response.raise_for_status()
 
     rates = response.json()
-    source = 'privatbank'
+    source = Source.objects.get_or_create(
+        code_name=consts.CODE_NAME_PRIVATBANK,
+        defaults={'name': 'PrivatBank'},
+    )
     available_currency_type = {
         'USD': mch.TYPE_USD,
         'EUR': mch.TYPE_EUR,
@@ -52,14 +56,17 @@ def parse_privatbank():
 
 @shared_task
 def parse_monobank():
-    from currency.models import Rate
+    from currency.models import Rate, Source
 
     monobank_currency_url = 'https://api.monobank.ua/bank/currency'
     response = requests.get(monobank_currency_url)
     response.raise_for_status()
 
     rates = response.json()
-    source = 'MonoBank'
+    source = Source.objects.get_or_create(
+        code_name=consts.CODE_NAME_MONOBANK,
+        defaults={'name': 'MonoBank'},
+    )
     available_currency_type = {
         840: mch.TYPE_USD,
         978: mch.TYPE_EUR,
@@ -96,14 +103,17 @@ def parse_monobank():
 
 @shared_task
 def parse_vkurse():
-    from currency.models import Rate
+    from currency.models import Rate, Source
 
     vkurse_currency_url = 'http://vkurse.dp.ua/course.json'
     response = requests.get(vkurse_currency_url)
     response.raise_for_status()
 
     rates = response.json()
-    source = 'vkurse'
+    source = Source.objects.get_or_create(
+        code_name=consts.CODE_NAME_VKURSE,
+        defaults={'name': 'Vkurse'},
+    )
 
     available_currency_type = {
         'Dollar': mch.TYPE_USD,
@@ -137,12 +147,15 @@ def parse_vkurse():
 
 @shared_task
 def parse_alfabank():
-    from currency.models import Rate
+    from currency.models import Rate, Source
 
     alfa_currency_url = 'https://old.alfabank.ua/'
     response = requests.get(alfa_currency_url)
     response.raise_for_status()
-    source = 'AlfaBank'
+    source = Source.objects.get_or_create(
+        code_name=consts.CODE_NAME_ALFABANK,
+        defaults={'name': 'AlfaBank'},
+    )
 
     soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -191,12 +204,15 @@ def parse_alfabank():
 
 @shared_task
 def parse_oschad():
-    from currency.models import Rate
+    from currency.models import Rate, Source
 
     oschad_currency_url = 'https://www.oschadbank.ua/currency-rate'
     response = requests.get(oschad_currency_url)
     response.raise_for_status()
-    source = 'OschadBank'
+    source = Source.objects.get_or_create(
+        code_name=consts.CODE_NAME_OSCHADBANK,
+        defaults={'name': 'OschadBank'},
+    )
 
     soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -246,12 +262,15 @@ def parse_oschad():
 
 @shared_task
 def parse_universal():
-    from currency.models import Rate
+    from currency.models import Rate, Source
 
     universal_currency_url = 'https://www.universalbank.com.ua/ru'
     response = requests.get(universal_currency_url)
     response.raise_for_status()
-    source = 'UniversalBank'
+    source = Source.objects.get_or_create(
+        code_name=consts.CODE_NAME_UNIVERSALBANK,
+        defaults={'name': 'UniversalBank'},
+    )
 
     soup = BeautifulSoup(response.text, 'html.parser')
 

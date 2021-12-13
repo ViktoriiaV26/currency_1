@@ -48,7 +48,7 @@ class ContactUsCreateView(CreateView):
 
 
 class RateListView(ListView):
-    queryset = Rate.objects.all().order_by('-created')
+    queryset = Rate.objects.all().select_related('source').order_by('-created')
     template_name = 'rate_list.html'
 
 

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'currency',
     'silk',
     'crispy_forms',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
