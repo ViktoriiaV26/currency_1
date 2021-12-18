@@ -122,6 +122,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -165,11 +168,11 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(minute='*/15'),
     },
     'parse_oschad': {
-        'task': 'currency.tasks.parse_alfabank',
+        'task': 'currency.tasks.parse_oschad',
         'schedule': crontab(minute='*/15'),
     },
     'parse_universal': {
-        'task': 'currency.tasks.parse_alfabank',
+        'task': 'currency.tasks.parse_universal',
         'schedule': crontab(minute='*/15'),
     },
 }
