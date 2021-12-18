@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,6 +41,9 @@ INSTALLED_APPS = [
     'silk',
     'crispy_forms',
     'rest_framework',
+    'drf_yasg',
+    'django_filters',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -148,11 +152,11 @@ AUTH_USER_MODEL = 'accounts.User'
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'bvv2624hillel@gmail.com'
-EMAIL_HOST_PASSWORD = 'bvv2624hillel10'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_USE_TLS = True
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'bvv2624hillel@gmail.com'
+# EMAIL_HOST_PASSWORD = 'bvv2624hillel10'
 SUPPORT_EMAIL = 'bvv2624hillel@gmail.com'
 
 CELERY_BROKER_URL = 'amqp://localhost'
@@ -182,4 +186,44 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'currency.tasks.parse_universal',
         'schedule': crontab(minute='*/15'),
     },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (  # 401
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (  # 403
+        # 'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'rates_anon_trottle': '2/min',
+    },
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+}
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=14),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer', 'JWT',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
