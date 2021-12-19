@@ -10,6 +10,4 @@ class RateFilter(filters.FilterSet):
         fields = {
             'buy': ('lt', 'lte', 'gt', 'gte', 'exact'),
             'sale': ('lt', 'lte', 'gt', 'gte', 'exact'),
-            # 'type': ('in', ),
-            # 'created': ('date', 'lte', 'gte'),
         }
