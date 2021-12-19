@@ -37,12 +37,12 @@ class Rate(models.Model):
         related_name='rates',
         on_delete=models.CASCADE,
     )
-    type = models.CharField(
+    type = models.CharField(    # noqa
         max_length=3,
         choices=mch.RATE_TYPE,
         blank=False,
         null=False,
-    )  # noqa
+    )
 
 
 class ResponseLog(models.Model):

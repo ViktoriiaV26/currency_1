@@ -1,11 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
-from django.conf import settings
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from currency.tasks import contact_us
 
 from currency.models import ContactUs, Rate, Source
 from currency.forms import SourceForm, RateForm
-from django.core.mail import send_mail
 
 
 class ContactUsListView(ListView):
@@ -37,13 +36,8 @@ class ContactUsCreateView(CreateView):
         Message: {message}
         """
 
-        send_mail(
-            subject,
-            full_email_message,
-            settings.EMAIL_HOST_USER,
-            [settings.SUPPORT_EMAIL],
-            fail_silently=False,
-        )
+        contact_us.apply_async(args=(subject, full_email_message))
+
         return super().form_valid(form)
 
 
