@@ -1,9 +1,27 @@
 from celery import shared_task
 import requests
 from decimal import Decimal
+
+from django.core.cache import cache
+from django.core.mail import send_mail
+
 from currency import consts
 from currency import model_choices as mch
 from bs4 import BeautifulSoup
+
+from currency.services import get_latest_rates
+from settings import settings
+
+
+@shared_task
+def contact_us(subject, message):
+    send_mail(
+        subject,
+        message,
+        settings.EMAIL_HOST_USER,
+        [settings.SUPPORT_EMAIL],
+        fail_silently=False,
+    )
 
 
 def round_currency(num):
@@ -22,7 +40,7 @@ def parse_privatbank():
     source = Source.objects.get_or_create(
         code_name=consts.CODE_NAME_PRIVATBANK,
         defaults={'name': 'PrivatBank'},
-    )
+    )[0]
     available_currency_type = {
         'USD': mch.TYPE_USD,
         'EUR': mch.TYPE_EUR,
@@ -53,6 +71,9 @@ def parse_privatbank():
                     source=source,
                 )
 
+                cache.delete(consts.CACHE_KEY_LATEST_RATES)
+                get_latest_rates()
+
 
 @shared_task
 def parse_monobank():
@@ -66,7 +87,7 @@ def parse_monobank():
     source = Source.objects.get_or_create(
         code_name=consts.CODE_NAME_MONOBANK,
         defaults={'name': 'MonoBank'},
-    )
+    )[0]
     available_currency_type = {
         840: mch.TYPE_USD,
         978: mch.TYPE_EUR,
@@ -113,7 +134,7 @@ def parse_vkurse():
     source = Source.objects.get_or_create(
         code_name=consts.CODE_NAME_VKURSE,
         defaults={'name': 'Vkurse'},
-    )
+    )[0]
 
     available_currency_type = {
         'Dollar': mch.TYPE_USD,
@@ -155,7 +176,7 @@ def parse_alfabank():
     source = Source.objects.get_or_create(
         code_name=consts.CODE_NAME_ALFABANK,
         defaults={'name': 'AlfaBank'},
-    )
+    )[0]
 
     soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -212,7 +233,7 @@ def parse_oschad():
     source = Source.objects.get_or_create(
         code_name=consts.CODE_NAME_OSCHADBANK,
         defaults={'name': 'OschadBank'},
-    )
+    )[0]
 
     soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -270,7 +291,7 @@ def parse_universal():
     source = Source.objects.get_or_create(
         code_name=consts.CODE_NAME_UNIVERSALBANK,
         defaults={'name': 'UniversalBank'},
-    )
+    )[0]
 
     soup = BeautifulSoup(response.text, 'html.parser')
 

@@ -13,7 +13,7 @@ class ContactUs(models.Model):
 class Source(models.Model):
     source_url = models.URLField(max_length=255)
     name = models.CharField(max_length=64)
-    code_name = models.CharField(max_length=25, unique=True, editable=False)
+    code_name = models.CharField(max_length=25, editable=False)
 
     logo = models.FileField(
         upload_to='sources/logo',
@@ -37,12 +37,12 @@ class Rate(models.Model):
         related_name='rates',
         on_delete=models.CASCADE,
     )
-    type = models.CharField(
+    type = models.CharField(   # noqa
         max_length=3,
         choices=mch.RATE_TYPE,
         blank=False,
         null=False,
-    )  # noqa
+    )
 
 
 class ResponseLog(models.Model):

@@ -3,9 +3,9 @@
 
 Source Details<br>
 
-Id: {{object.id}}<br>
-Name: {{object.name}}<br>
-Source: {{object.source_url}}<br>
+Id: {{source.id}}<br>
+Name: {{source.code_name}}<br>
+Source: {{source.source_url}}<br>
 
 Related Rates
 
@@ -17,7 +17,7 @@ Related Rates
         <th> Type </th>
         <th> Actions </th>
     </tr>
-    {% for rate in objects.rates.all %}
+    {% for rate in source.rates.all %}
         <tr>
             <td>{{ rate.id }}</td>
             <td> {{ rate.sale }}</td>

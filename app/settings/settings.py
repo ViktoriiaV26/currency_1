@@ -155,6 +155,15 @@ EMAIL_HOST_USER = 'bvv2624hillel@gmail.com'
 EMAIL_HOST_PASSWORD = 'bvv2624hillel10'
 SUPPORT_EMAIL = 'bvv2624hillel@gmail.com'
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+
 CELERY_BROKER_URL = 'amqp://localhost'
 
 CELERY_BEAT_SCHEDULE = {
