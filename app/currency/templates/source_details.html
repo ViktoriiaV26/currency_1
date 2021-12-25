@@ -3,8 +3,42 @@
 
 Source Details<br>
 
-Id: {{object.id}}<br>
-Name: {{object.name}}<br>
-Source: {{object.source_url}}<br>
+Id: {{source.id}}<br>
+Name: {{source.code_name}}<br>
+Source: {{source.source_url}}<br>
+
+Related Rates
+
+<table class="table table-striped">
+    <tr>
+        <th> Id </th>
+        <th> Sale </th>
+        <th> Buy </th>
+        <th> Type </th>
+        <th> Actions </th>
+    </tr>
+    {% for rate in source.rates.all %}
+        <tr>
+            <td>{{ rate.id }}</td>
+            <td> {{ rate.sale }}</td>
+            <td>{{ rate.buy }}</td>
+            <td>{{ rate.get_type_display }}</td>
+            {% if request.user.is_superuser %}
+            <td>
+                <div class="dropdown">
+                  <button class="btn btn-outline-warning text-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                    Actions
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="btn btn-outline-dark btn-sm" href="{% url 'currency:rate-details' rate.pk %}"> Details </a>
+                    <a class="btn btn-outline-dark btn-sm" href="{% url 'currency:rate-update' rate.pk %}"> Update </a>
+                    <a class="btn btn-outline-dark btn-sm" href="{% url 'currency:rate-delete' rate.pk %}"> Delete </a>
+                  </div>
+                </div>
+            </td>
+            {%endif%}
+        </tr>
+        {% endfor %}
+</table>
 
 {% endblock %}

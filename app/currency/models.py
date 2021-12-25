@@ -1,4 +1,6 @@
 from django.db import models
+from django.templatetags.static import static
+
 from currency import model_choices as mch
 
 
@@ -8,17 +10,39 @@ class ContactUs(models.Model):
     message = models.CharField(max_length=2050)
 
 
+class Source(models.Model):
+    source_url = models.URLField(max_length=255)
+    name = models.CharField(max_length=64)
+    code_name = models.CharField(max_length=25, editable=False)
+
+    logo = models.FileField(
+        upload_to='sources/logo',
+        blank=True,
+        null=True,
+        default=None,
+    )
+
+    def get_logo(self):
+        if self.logo:
+            return self.logo.url
+        return static('images/source-default.jpeg')
+
+
 class Rate(models.Model):
     sale = models.DecimalField(max_digits=5, decimal_places=2)
     buy = models.DecimalField(max_digits=5, decimal_places=2)
     created = models.DateTimeField(auto_now_add=True)
-    source = models.CharField(max_length=32)
-    type = models.CharField(max_length=3, choices=mch.RATE_TYPE)  # noqa
-
-
-class Source(models.Model):
-    source_url = models.URLField(max_length=255)
-    name = models.CharField(max_length=64)
+    source = models.ForeignKey(
+        Source,
+        related_name='rates',
+        on_delete=models.CASCADE,
+    )
+    type = models.CharField(   # noqa
+        max_length=3,
+        choices=mch.RATE_TYPE,
+        blank=False,
+        null=False,
+    )
 
 
 class ResponseLog(models.Model):
