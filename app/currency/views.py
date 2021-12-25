@@ -1,11 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.conf import settings
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, TemplateView
 
 from currency.models import ContactUs, Rate, Source
 from currency.forms import SourceForm, RateForm
 from django.core.mail import send_mail
+from currency.services import get_latest_rates
 
 
 class ContactUsListView(ListView):
@@ -111,3 +112,12 @@ class SourceDeleteView(DeleteView):
     queryset = Source.objects.all()
     success_url = reverse_lazy('currency:source-list')
     template_name = 'source_delete.html'
+
+
+class LatestRateView(TemplateView):
+    template_name = 'latest_rates.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['rate_list'] = get_latest_rates()
+        return context

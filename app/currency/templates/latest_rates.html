@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block main_content %}
+
+<a href="{% url 'currency:rate-create' %}"><button class="btn btn-warning text-dark">Create Rate</button></a>
+
+<table class="table table-striped">
+    <tr>
+        <th> Id </th>
+        <th> Sale </th>
+        <th> Buy </th>
+        <th> Type </th>
+        <th> Source </th>
+    </tr>
+    {% for rate in rate_list %}
+    <tr>
+        <td>{{ rate.id }}</td>
+        <td> {{ rate.sale }}</td>
+        <td>{{ rate.buy }}</td>
+        <td>{{ rate.get_type_display }}</td>
+        <td><a href="{% url 'currency:source-details' rate.source_id %}">{{ rate.source.name }}</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
